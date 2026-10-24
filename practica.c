@@ -124,7 +124,7 @@ void dispatcher(int argc, char *argv[])
 	int my_d;
 	char mailbox_dispatcher_name[64];
 	int k = 0;
-	int s = 0;
+	int s = uniform_int(0, NUM_SERVERS-1);
 
 	my_d = atoi(argv[0]);
 
