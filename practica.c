@@ -8,6 +8,7 @@
 #include "xbt/str.h"
 #include "xbt/sysdep.h"
 #include "rand.h"
+#include <time.h>
 
 
 #define NUM_SERVERS	1
@@ -65,7 +66,7 @@ static int sort_function(const void *e1, const void *e2)
 
 
 // Client function: genera las peticiones
-int client(int argc, char *argv[])
+void client(int argc, char *argv[])
 {
   	char mailbox_name[256];
   	struct ClientRequest *req ;
@@ -112,12 +113,12 @@ int client(int argc, char *argv[])
         sg_mailbox_put(mailbox, req, 0);
 
     	/* finalizar */
-  	return 0;
+  	return;
 }                               
 
 
 // dispatcher function, recibe las peticiones de los clientes y las envía a los servidores
-int dispatcher(int argc, char *argv[])
+void dispatcher(int argc, char *argv[])
 {
         struct ClientRequest *req;
 	int my_d;
@@ -164,12 +165,12 @@ int dispatcher(int argc, char *argv[])
 		sg_mailbox_put(mailbox_server, req, 0);
 	}
 
-	return 0;
+	return;
 }
 
 
 /** server function  */
-int server(int argc, char *argv[])
+void server(int argc, char *argv[])
 {
   	struct ClientRequest *req;
   	int res;
@@ -208,12 +209,12 @@ int server(int argc, char *argv[])
 	sg_cond_notify_all(cond[my_s]);
     	sg_mutex_unlock(mutex[my_s]);
 
-  	return 0;
+  	return;
 }       
 
 
 /** server function  */
-int dispatcherServer(int argc, char *argv[])
+void dispatcherServer(int argc, char *argv[])
 {
 	int res;
   	struct ClientRequest *req;
@@ -262,7 +263,7 @@ int dispatcherServer(int argc, char *argv[])
 
 		free(req);
 	}
-	return 0;
+	return;
 }
 
 

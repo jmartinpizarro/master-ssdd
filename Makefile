@@ -1,7 +1,7 @@
 BIN_FILES  =  practica
 
-#cambiar el PATH
-INSTALL_PATH = $(HOME)/simgrid-4.1
+# Ruta de instalación de SimGrid; puede sobrescribirse con make INSTALL_PATH=/otra/ruta
+INSTALL_PATH ?= /directorio_install
 
 CC = gcc
 
