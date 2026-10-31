@@ -145,8 +145,6 @@ void dispatcher(int argc, char *argv[])
                 // el menor numero de elementos en la cola.
                 
                 // ahora solo se envian los trabajos al servidor 0
-		s = 0;
-
 
 		char mailbox_server_name[64];
                 sprintf(mailbox_server_name, "s-%d", s);
@@ -155,7 +153,11 @@ void dispatcher(int argc, char *argv[])
 		sg_mailbox_put(mailbox_server, req, 0);
 
 		k++;
-        }
+		s++;
+		if (s >= NUM_SERVERS){
+			s = 0;
+		}
+	}
 
 	// enviar el fin (req->n_task == -1) a todos los servidores
 	for (int i = 0; i< NUM_SERVERS; i++) {
