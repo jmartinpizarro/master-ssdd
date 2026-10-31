@@ -124,7 +124,7 @@ void dispatcher(int argc, char *argv[])
 	int my_d;
 	char mailbox_dispatcher_name[64];
 	int k = 0;
-	int s = uniform_int(0, NUM_SERVERS-1);
+	int s = 0;
 
 	my_d = atoi(argv[0]);
 
@@ -145,7 +145,7 @@ void dispatcher(int argc, char *argv[])
                 // el menor numero de elementos en la cola.
                 
                 // ahora solo se envian los trabajos al servidor 0
-		s = 0;
+		s = uniform_int(0, NUM_SERVERS-1);
 
 
 		char mailbox_server_name[64];

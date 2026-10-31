@@ -5,7 +5,7 @@ set -eu
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROGRAM="${PROGRAM:-$SCRIPT_DIR/practica}"
 PLATFORM="${PLATFORM:-$SCRIPT_DIR/platform-cluster.xml}"
-OUTPUT="${OUTPUT:-$SCRIPT_DIR/resultados.txt}"
+OUTPUT="${OUTPUT:-$SCRIPT_DIR/resultados.csv}"
 REPETITIONS=30
 RATES=(0.2 0.5 0.7 0.9)
 
@@ -21,6 +21,7 @@ if [[ ! -f "$PLATFORM" ]]; then
 fi
 
 printf 'lambda\trepeticion\ttiempo_medio_servicio\ttamano_medio_cola\ttareas_medias_sistema	tareas\n' > "$OUTPUT"
+printf 'lambda,repeticion,tiempo_medio_servicio,tamano_medio_cola,tareas_medias_sistema,tareas\n' > "$OUTPUT"
 
 for rate in "${RATES[@]}"; do
     for ((run = 1; run <= REPETITIONS; run++)); do
@@ -28,7 +29,7 @@ for rate in "${RATES[@]}"; do
 
         metrics="$("$PROGRAM" "$PLATFORM" "$rate" | awk '
             NF >= 4 && $1 ~ /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/ {
-                print $1 "\t" $2 "\t" $3 "\t" $4
+                print $1 "," $2 "," $3 "," $4
                 exit
             }
         ')"
@@ -38,7 +39,7 @@ for rate in "${RATES[@]}"; do
             exit 1
         fi
 
-        printf '%s\t%d\t%s\n' "$rate" "$run" "$metrics" >> "$OUTPUT"
+        printf '%s,%d,%s\n' "$rate" "$run" "$metrics" >> "$OUTPUT"
     done
 done
 
